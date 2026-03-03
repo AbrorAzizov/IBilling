@@ -6,5 +6,6 @@ class RouteNames {
   static const String newContract = 'new';
   static const String saved = 'saved';
   static const String profile = 'profile';
-
+  static const contractCreate = 'contractCreate';
+  static const invoiceCreate = 'invoiceCreate';
 }

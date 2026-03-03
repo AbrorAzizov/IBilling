@@ -6,5 +6,6 @@ class RoutePaths {
   static const String newContract = '/new';
   static const String saved = '/saved';
   static const String profile = '/profile';
-
+  static const contractCreate = '/contract-create';
+  static const invoiceCreate = '/invoice-create';
 }

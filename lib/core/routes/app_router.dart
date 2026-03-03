@@ -1,4 +1,3 @@
-
 /// Provides declarative routing with:
 /// - Named routes.dart
 /// - Deep linking support
@@ -8,16 +7,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibilling_test/feature/home/presentation/pages/home_shell.dart';
 
 // Your existing feature imports
+import '../../feature/contracts/presentation/pages/home_shell.dart';
+import '../../feature/contracts/presentation/pages/tabs/create_contract_tab.dart';
+import '../../feature/contracts/presentation/pages/tabs/create_invoice_tab.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
 
 final class AppRouter {
   AppRouter._();
 
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
   static GoRouter? _cachedRouter;
 
   static GoRouter createRouter() {
@@ -28,11 +30,9 @@ final class AppRouter {
       navigatorKey: navigatorKey,
       initialLocation: initialLocation,
       debugLogDiagnostics: true,
-      errorBuilder: (context, state) => Scaffold(
-        body: Center(child: Text('Error: ${state.error}')),
-      ),
+      errorBuilder: (context, state) =>
+          Scaffold(body: Center(child: Text('Error: ${state.error}'))),
       routes: [
-
         // 2. THE MAIN NAV BAR LOGIC (Stateful Navigation)
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
@@ -45,7 +45,8 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.home,
                   name: RouteNames.home,
-                  builder: (context, state) => const Center(child: Text("Contracts Screen")),
+                  builder: (context, state) =>
+                      const Center(child: Text("Contracts Screen")),
                 ),
               ],
             ),
@@ -55,7 +56,8 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.history,
                   name: RouteNames.history,
-                  builder: (context, state) => const Center(child: Text("History Screen")),
+                  builder: (context, state) =>
+                      const Center(child: Text("History Screen")),
                 ),
               ],
             ),
@@ -65,8 +67,20 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.newContract,
                   name: RouteNames.newContract,
-                  builder: (context, state) => const Center(child: Text("New Screen")),
+                  builder: (context, state) =>
+                      const Center(child: Text("New Screen")),
                 ),
+                GoRoute(
+                  path: RoutePaths.contractCreate,   // <-- use RoutePaths
+                  name: RouteNames.contractCreate,
+                  builder: (context, state) => const CreateContractTab(),
+                ),
+                GoRoute(
+                  path: RoutePaths.invoiceCreate,    // <-- use RoutePaths
+                  name: RouteNames.invoiceCreate,
+                  builder: (context, state) => const CreateInvoiceTab(),
+                ),
+
               ],
             ),
             // BRANCH: Saved
@@ -75,7 +89,8 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.saved,
                   name: RouteNames.saved,
-                  builder: (context, state) => const Center(child: Text("Saved Screen")),
+                  builder: (context, state) =>
+                      const Center(child: Text("Saved Screen")),
                 ),
               ],
             ),
@@ -85,14 +100,13 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.profile,
                   name: RouteNames.profile,
-                  builder: (context, state) => const Center(child: Text("Profile Screen")),
+                  builder: (context, state) =>
+                      const Center(child: Text("Profile Screen")),
                 ),
               ],
             ),
           ],
         ),
-
-
       ],
     );
 
@@ -101,4 +115,3 @@ final class AppRouter {
 
   static GoRouter get router => _cachedRouter!;
 }
-
