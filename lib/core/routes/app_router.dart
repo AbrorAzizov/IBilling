@@ -1,17 +1,12 @@
-/// Provides declarative routing with:
-/// - Named routes.dart
-/// - Deep linking support
-/// - Route guards/redirects
-/// - Shell routes.dart for nested navigation
-/// - BLoC provider integration
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:get_it/get_it.dart';
 
-// Your existing feature imports
 import '../../feature/contracts/presentation/pages/home_shell.dart';
-import '../../feature/contracts/presentation/pages/tabs/create_contract_tab.dart';
-import '../../feature/contracts/presentation/pages/tabs/create_invoice_tab.dart';
+import '../../feature/new/presentation/bloc/create_bloc.dart';
+import '../../feature/new/presentation/tabs/create_contract_tab.dart';
+import '../../feature/new/presentation/tabs/create_invoice_tab.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
 
@@ -23,7 +18,6 @@ final class AppRouter {
   static GoRouter? _cachedRouter;
 
   static GoRouter createRouter() {
-    // Determine initial location logic
     String initialLocation = RoutePaths.home;
 
     _cachedRouter = GoRouter(
@@ -33,13 +27,11 @@ final class AppRouter {
       errorBuilder: (context, state) =>
           Scaffold(body: Center(child: Text('Error: ${state.error}'))),
       routes: [
-        // 2. THE MAIN NAV BAR LOGIC (Stateful Navigation)
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return HomeShell(navigationShell: navigationShell);
           },
           branches: [
-            // BRANCH: Contracts
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -50,7 +42,6 @@ final class AppRouter {
                 ),
               ],
             ),
-            // BRANCH: History
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -61,7 +52,6 @@ final class AppRouter {
                 ),
               ],
             ),
-            // BRANCH: New
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -71,19 +61,23 @@ final class AppRouter {
                       const Center(child: Text("New Screen")),
                 ),
                 GoRoute(
-                  path: RoutePaths.contractCreate,   // <-- use RoutePaths
+                  path: RoutePaths.contractCreate,
                   name: RouteNames.contractCreate,
-                  builder: (context, state) => const CreateContractTab(),
+                  builder: (context, state) => BlocProvider(
+                    create: (_) => GetIt.I<CreateBloc>(),
+                    child: const CreateContractTab(),
+                  ),
                 ),
                 GoRoute(
-                  path: RoutePaths.invoiceCreate,    // <-- use RoutePaths
+                  path: RoutePaths.invoiceCreate,
                   name: RouteNames.invoiceCreate,
-                  builder: (context, state) => const CreateInvoiceTab(),
+                  builder: (context, state) => BlocProvider(
+                    create: (_) => GetIt.I<CreateBloc>(),
+                    child: const CreateInvoiceTab(),
+                  ),
                 ),
-
               ],
             ),
-            // BRANCH: Saved
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -94,7 +88,6 @@ final class AppRouter {
                 ),
               ],
             ),
-            // BRANCH: Profile
             StatefulShellBranch(
               routes: [
                 GoRoute(

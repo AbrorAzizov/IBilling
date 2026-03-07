@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,14 +20,13 @@ import 'feature/app/presentation/app.dart';
 Future<void> bootstrap() async {
   // Run in a guarded zone for error handling
   await runZonedGuarded(
-        () async {
+    () async {
       // Preserve splash screen while initializing
-WidgetsFlutterBinding.ensureInitialized();
-
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp();
 
       // Initialize dependency injection
       await InjectionContainer.init();
-
 
       // Register BLoC observer for debugging
       if (kDebugMode) {
@@ -35,7 +35,7 @@ WidgetsFlutterBinding.ensureInitialized();
 
       runApp(const App());
     },
-        (error, stackTrace) {
+    (error, stackTrace) {
       // Global error handling
       debugPrint('❌ Error: $error');
       debugPrint('❌ StackTrace: $stackTrace');

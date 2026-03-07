@@ -1,5 +1,6 @@
-
 import 'package:get_it/get_it.dart';
+
+import '../../feature/new/di/new_module.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -17,7 +18,17 @@ abstract final class InjectionContainer {
   static Future<void> init() async {
     if (_initialized) return;
 
+    // Core services
+    await _initCore();
+
+    // Feature modules
+    await CreateModule().register(sl);
 
     _initialized = true;
+  }
+
+  static Future<void> _initCore() async {
+    // Example registrations
+    // sl.registerLazySingleton(() => FirebaseFirestore.instance);
   }
 }
