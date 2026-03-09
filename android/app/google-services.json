@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738952165904",
+    "project_id": "first-project-34ce3",
+    "storage_bucket": "first-project-34ce3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738952165904:android:6a1182b8b3a54fb042e895",
+        "android_client_info": {
+          "package_name": "com.example.ibilling_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJkPim5JCzPLEc2v4xZ7fWtXKwIHeBJwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
