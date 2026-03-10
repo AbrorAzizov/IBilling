@@ -8,5 +8,6 @@ abstract class ContractRepository {
     String? query,
     DateTime? fromDate,
     DateTime? toDate,
+    List<ContractStatus>? statuses,
   });
 }

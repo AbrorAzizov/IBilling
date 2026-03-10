@@ -65,15 +65,11 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   ) async {
     emit(state.copyWith(status: ContractsStatus.loading, contracts: []));
 
-    // For now, using the repository's filter method if available or just fetching with constraints.
-    // Since getContractsUseCase is what we have registered, let's see if we should use repository.
-    // Actually, I'll use the repository directly or update the use case.
-    // To keep it simple and consistent with what I wrote before, I'll assume the repo has filterContracts.
-    
     final result = await getContractsUseCase.repository.filterContracts(
       query: event.query,
       fromDate: event.fromDate,
       toDate: event.toDate,
+      statuses: event.statuses,
     );
 
     result.fold(
@@ -84,7 +80,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       (contracts) => emit(state.copyWith(
         status: ContractsStatus.success,
         contracts: contracts,
-        hasReachedMax: true, // Filters usually don't support pagination in this simple implementation
+        hasReachedMax: true,
       )),
     );
   }

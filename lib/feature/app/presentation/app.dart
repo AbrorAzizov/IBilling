@@ -29,12 +29,8 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       title: 'StudyNinja',
       locale: _locale,
-
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ru'),
-        Locale('uz'),
-      ],
+      debugShowCheckedModeBanner: false,
+      supportedLocales: const [Locale('en'), Locale('ru'), Locale('uz')],
 
       localizationsDelegates: [
         AppLocalizations.delegate,

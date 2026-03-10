@@ -30,12 +30,14 @@ class ContractRepositoryImpl implements ContractRepository {
     String? query,
     DateTime? fromDate,
     DateTime? toDate,
+    List<ContractStatus>? statuses,
   }) async {
     try {
       final contracts = await remoteDataSource.filterContracts(
         query: query,
         fromDate: fromDate,
         toDate: toDate,
+        statuses: statuses,
       );
       return Right(contracts);
     } catch (e) {

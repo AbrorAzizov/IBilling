@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/contract_model.dart';
+import '../../domain/entity/contract.dart';
 
 abstract class ContractRemoteDataSource {
   Future<List<ContractModel>> getContracts({int limit = 3, String? lastCreatedAt});
@@ -7,6 +8,7 @@ abstract class ContractRemoteDataSource {
     String? query,
     DateTime? fromDate,
     DateTime? toDate,
+    List<ContractStatus>? statuses,
   });
 }
 
@@ -41,6 +43,7 @@ class ContractRemoteDataSourceImpl implements ContractRemoteDataSource {
     String? query,
     DateTime? fromDate,
     DateTime? toDate,
+    List<ContractStatus>? statuses,
   }) async {
     try {
       Query<Map<String, dynamic>> baseQuery = firestore.collection('contracts');
@@ -53,6 +56,10 @@ class ContractRemoteDataSourceImpl implements ContractRemoteDataSource {
       if (toDate != null) {
         baseQuery = baseQuery.where('createdAt',
             isLessThanOrEqualTo: toDate.toIso8601String());
+      }
+
+      if (statuses != null && statuses.isNotEmpty) {
+        baseQuery = baseQuery.where('status', whereIn: statuses.map((e) => e.name).toList());
       }
 
       final snapshot = await baseQuery.get();
