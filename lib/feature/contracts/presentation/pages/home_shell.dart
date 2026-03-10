@@ -33,7 +33,7 @@ class HomeShell extends StatelessWidget {
       barrierDismissible: true,
       builder: (context) {
         return Dialog(
-          backgroundColor: AppColors.black,
+          backgroundColor: AppColors.secondary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -214,7 +214,7 @@ class _CreateOption extends StatelessWidget {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: Color(0xFF4E4E4E),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../feature/contracts/presentation/bloc/contracts_bloc.dart';
+import '../../feature/contracts/presentation/pages/contracts_page.dart';
 import '../../feature/contracts/presentation/pages/home_shell.dart';
 import '../../feature/new/presentation/bloc/create_bloc.dart';
 import '../../feature/new/presentation/tabs/create_contract_tab.dart';
@@ -37,8 +39,10 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.home,
                   name: RouteNames.home,
-                  builder: (context, state) =>
-                      const Center(child: Text("Contracts Screen")),
+                  builder: (context, state) => BlocProvider(
+                    create: (context) => GetIt.I<ContractsBloc>(),
+                    child: const ContractsPage(),
+                  ),
                 ),
               ],
             ),

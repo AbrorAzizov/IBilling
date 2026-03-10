@@ -94,4 +94,73 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get invoiceStatus => 'Hisob-faktura holati';
+
+  @override
+  String get loading => 'Yuklanmoqda...';
+
+  @override
+  String get loadMore => 'Ko\'proq yuklash';
+
+  @override
+  String get noContracts => 'Shartnomalar topilmadi';
+
+  @override
+  String get monday => 'Du';
+
+  @override
+  String get tuesday => 'Se';
+
+  @override
+  String get wednesday => 'Chorsh';
+
+  @override
+  String get thursday => 'Pay';
+
+  @override
+  String get friday => 'Ju';
+
+  @override
+  String get saturday => 'Sha';
+
+  @override
+  String get sunday => 'Yak';
+
+  @override
+  String get january => 'Yanvar';
+
+  @override
+  String get february => 'Fevral';
+
+  @override
+  String get march => 'Mart';
+
+  @override
+  String get april => 'Aprel';
+
+  @override
+  String get may => 'May';
+
+  @override
+  String get june => 'Iyun';
+
+  @override
+  String get july => 'Iyul';
+
+  @override
+  String get august => 'Avgust';
+
+  @override
+  String get september => 'Sentabr';
+
+  @override
+  String get october => 'Oktabr';
+
+  @override
+  String get november => 'Noyabr';
+
+  @override
+  String get december => 'Dekabr';
+
+  @override
+  String get searchHint => 'Search by keywords';
 }

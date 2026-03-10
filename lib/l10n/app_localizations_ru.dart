@@ -94,4 +94,73 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get invoiceStatus => 'Статус счёта';
+
+  @override
+  String get loading => 'Загрузка...';
+
+  @override
+  String get loadMore => 'Загрузить ещё';
+
+  @override
+  String get noContracts => 'Контракты не найдены';
+
+  @override
+  String get monday => 'Пн';
+
+  @override
+  String get tuesday => 'Вт';
+
+  @override
+  String get wednesday => 'Ср';
+
+  @override
+  String get thursday => 'Чт';
+
+  @override
+  String get friday => 'Пт';
+
+  @override
+  String get saturday => 'Сб';
+
+  @override
+  String get sunday => 'Вс';
+
+  @override
+  String get january => 'Январь';
+
+  @override
+  String get february => 'Февраль';
+
+  @override
+  String get march => 'Март';
+
+  @override
+  String get april => 'Апрель';
+
+  @override
+  String get may => 'Май';
+
+  @override
+  String get june => 'Июнь';
+
+  @override
+  String get july => 'Июль';
+
+  @override
+  String get august => 'Август';
+
+  @override
+  String get september => 'Сентябрь';
+
+  @override
+  String get october => 'Октябрь';
+
+  @override
+  String get november => 'Ноябрь';
+
+  @override
+  String get december => 'Декабрь';
+
+  @override
+  String get searchHint => 'Поиск по ключевым словам';
 }

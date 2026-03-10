@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibilling_test/feature/shared/widgets/app_bar.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../contracts/presentation/widgets/custom_dropdown.dart';
 import '../../../contracts/presentation/widgets/custom_field.dart';
@@ -9,6 +10,7 @@ import '../bloc/create_bloc.dart';
 import '../bloc/create_event.dart';
 import '../bloc/create_state.dart';
 
+/// Create Contract Tab
 class CreateContractTab extends StatefulWidget {
   const CreateContractTab({super.key});
 
@@ -48,86 +50,91 @@ class _CreateContractTabState extends State<CreateContractTab> {
           );
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            DropdownField(
-              label: l10n.entity,
-              value: selectedPersonType == ContractPersonType.physical
-                  ? l10n.individual
-                  : selectedPersonType == ContractPersonType.legal
-                      ? l10n.legalEntity
-                      : null,
-              onChanged: (value) {
-                setState(() {
-                  if (value == l10n.individual) {
-                    selectedPersonType = ContractPersonType.physical;
-                  } else if (value == l10n.legalEntity) {
-                    selectedPersonType = ContractPersonType.legal;
-                  }
-                });
-              },
-              items: [
-                l10n.individual,
-                l10n.legalEntity,
-              ],
-            ),
-            const SizedBox(height: 16),
-            CustomField(
-              label: l10n.fullName,
-              controller: fullNameController,
-            ),
-            const SizedBox(height: 16),
-            CustomField(
-              label: l10n.organizationAddress,
-              controller: addressController,
-            ),
-            const SizedBox(height: 16),
-            CustomField(
-              label: l10n.inn,
-              controller: innController,
-            ),
-            const SizedBox(height: 16),
-            DropdownField(
-              label: l10n.contractStatus,
-              value: selectedStatus == ContractStatus.paid
-                  ? l10n.paid
-                  : selectedStatus == ContractStatus.inProcess
-                      ? l10n.inProcess
-                      : selectedStatus == ContractStatus.rejectedByPayme
-                          ? l10n.rejectedPayme
-                          : selectedStatus == ContractStatus.rejectedByIQ
-                              ? l10n.rejectedIq
-                              : null,
-              onChanged: (value) {
-                setState(() {
-                  if (value == l10n.paid) {
-                    selectedStatus = ContractStatus.paid;
-                  } else if (value == l10n.inProcess) {
-                    selectedStatus = ContractStatus.inProcess;
-                  } else if (value == l10n.rejectedPayme) {
-                    selectedStatus = ContractStatus.rejectedByPayme;
-                  } else if (value == l10n.rejectedIq) {
-                    selectedStatus = ContractStatus.rejectedByIQ;
-                  }
-                });
-              },
-              items: [
-                l10n.paid,
-                l10n.inProcess,
-                l10n.rejectedPayme,
-                l10n.rejectedIq,
-              ],
-            ),
-            const SizedBox(height: 24),
-            BlocBuilder<CreateBloc, CreateState>(
-              builder: (context, state) {
-                return PrimaryButton(
-                  title: l10n.saveContract,
-                  onPressed: state.status == CreateStatus.loading
-                      ? null
-                      : () {
+      child: Column(
+        children: [
+          const CustomAppBar(title: 'New Contract'),
+          const SizedBox(height: 8),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ListView(
+                children: [
+                  DropdownField(
+                    label: l10n.entity,
+                    value: selectedPersonType == ContractPersonType.physical
+                        ? l10n.individual
+                        : selectedPersonType == ContractPersonType.legal
+                        ? l10n.legalEntity
+                        : null,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value == l10n.individual) {
+                          selectedPersonType = ContractPersonType.physical;
+                        } else if (value == l10n.legalEntity) {
+                          selectedPersonType = ContractPersonType.legal;
+                        }
+                      });
+                    },
+                    items: [
+                      l10n.individual,
+                      l10n.legalEntity,
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  CustomField(
+                    label: l10n.fullName,
+                    controller: fullNameController,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomField(
+                    label: l10n.organizationAddress,
+                    controller: addressController,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomField(
+                    label: l10n.inn,
+                    controller: innController,
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownField(
+                    label: l10n.contractStatus,
+                    value: selectedStatus == ContractStatus.paid
+                        ? l10n.paid
+                        : selectedStatus == ContractStatus.inProcess
+                        ? l10n.inProcess
+                        : selectedStatus == ContractStatus.rejectedByPayme
+                        ? l10n.rejectedPayme
+                        : selectedStatus == ContractStatus.rejectedByIQ
+                        ? l10n.rejectedIq
+                        : null,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value == l10n.paid) {
+                          selectedStatus = ContractStatus.paid;
+                        } else if (value == l10n.inProcess) {
+                          selectedStatus = ContractStatus.inProcess;
+                        } else if (value == l10n.rejectedPayme) {
+                          selectedStatus = ContractStatus.rejectedByPayme;
+                        } else if (value == l10n.rejectedIq) {
+                          selectedStatus = ContractStatus.rejectedByIQ;
+                        }
+                      });
+                    },
+                    items: [
+                      l10n.paid,
+                      l10n.inProcess,
+                      l10n.rejectedPayme,
+                      l10n.rejectedIq,
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  BlocBuilder<CreateBloc, CreateState>(
+                    builder: (context, state) {
+                      return PrimaryButton(
+                        title: l10n.saveContract,
+                        onPressed: state.status == CreateStatus.loading
+                            ? null
+                            : () {
                           if (selectedPersonType != null &&
                               selectedStatus != null) {
                             final contract = Contract(
@@ -140,8 +147,8 @@ class _CreateContractTabState extends State<CreateContractTab> {
                               createdAt: DateTime.now(),
                             );
                             context.read<CreateBloc>().add(
-                                  CreateContractRequested(contract),
-                                );
+                              CreateContractRequested(contract),
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -149,11 +156,14 @@ class _CreateContractTabState extends State<CreateContractTab> {
                             );
                           }
                         },
-                );
-              },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

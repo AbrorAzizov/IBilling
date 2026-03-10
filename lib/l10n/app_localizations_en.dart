@@ -94,4 +94,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invoiceStatus => 'Status of the invoice';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get loadMore => 'Load More';
+
+  @override
+  String get noContracts => 'No contracts found';
+
+  @override
+  String get monday => 'Mo';
+
+  @override
+  String get tuesday => 'Tu';
+
+  @override
+  String get wednesday => 'We';
+
+  @override
+  String get thursday => 'Th';
+
+  @override
+  String get friday => 'Fr';
+
+  @override
+  String get saturday => 'Sa';
+
+  @override
+  String get sunday => 'Su';
+
+  @override
+  String get january => 'January';
+
+  @override
+  String get february => 'February';
+
+  @override
+  String get march => 'March';
+
+  @override
+  String get april => 'April';
+
+  @override
+  String get may => 'May';
+
+  @override
+  String get june => 'June';
+
+  @override
+  String get july => 'July';
+
+  @override
+  String get august => 'August';
+
+  @override
+  String get september => 'September';
+
+  @override
+  String get october => 'October';
+
+  @override
+  String get november => 'November';
+
+  @override
+  String get december => 'December';
+
+  @override
+  String get searchHint => 'Search by keywords';
 }
