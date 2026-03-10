@@ -51,5 +51,19 @@
   "october": "Октябрь",
   "november": "Ноябрь",
   "december": "Декабрь",
-  "searchHint": "Поиск по ключевым словам"
+  "searchHint": "Поиск по ключевым словам",
+  "filters": "Фильтры",
+  "status": "Статус",
+  "date": "Дата",
+  "to": "До",
+  "cancel": "Отмена",
+  "applyFilters": "Применить фильтры",
+  "dateOfBirth": "Дата рождения:",
+  "phoneNumber": "Номер телефона:",
+  "email": "Электронная почта:",
+  "chooseLanguage": "Выберите язык",
+  "uzbek": "O'zbek (Lotin)",
+  "russian": "Русский",
+  "english": "English (USA)",
+  "done": "Готово"
 }

@@ -163,4 +163,46 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get searchHint => 'Поиск по ключевым словам';
+
+  @override
+  String get filters => 'Фильтры';
+
+  @override
+  String get status => 'Статус';
+
+  @override
+  String get date => 'Дата';
+
+  @override
+  String get to => 'До';
+
+  @override
+  String get cancel => 'Отмена';
+
+  @override
+  String get applyFilters => 'Применить фильтры';
+
+  @override
+  String get dateOfBirth => 'Дата рождения:';
+
+  @override
+  String get phoneNumber => 'Номер телефона:';
+
+  @override
+  String get email => 'Электронная почта:';
+
+  @override
+  String get chooseLanguage => 'Выберите язык';
+
+  @override
+  String get uzbek => 'O\'zbek (Lotin)';
+
+  @override
+  String get russian => 'Русский';
+
+  @override
+  String get english => 'English (USA)';
+
+  @override
+  String get done => 'Готово';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entity/contract.dart';
 
 class FiltersPage extends StatefulWidget {
@@ -33,15 +34,17 @@ class _FiltersPageState extends State<FiltersPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Filters',
-          style: TextStyle(
+        title: Text(
+          l10n.filters,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w700,
@@ -57,9 +60,9 @@ class _FiltersPageState extends State<FiltersPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Status',
-              style: TextStyle(
+            Text(
+              l10n.status,
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
@@ -71,25 +74,25 @@ class _FiltersPageState extends State<FiltersPage> {
               runSpacing: 16,
               children: [
                 _StatusCheckbox(
-                  title: 'Paid',
+                  title: l10n.paid,
                   status: ContractStatus.paid,
                   isSelected: selectedStatuses.contains(ContractStatus.paid),
                   onChanged: (val) => _toggleStatus(ContractStatus.paid, val),
                 ),
                 _StatusCheckbox(
-                  title: 'Rejected by IQ',
+                  title: l10n.rejectedIq,
                   status: ContractStatus.rejectedByIQ,
                   isSelected: selectedStatuses.contains(ContractStatus.rejectedByIQ),
                   onChanged: (val) => _toggleStatus(ContractStatus.rejectedByIQ, val),
                 ),
                 _StatusCheckbox(
-                  title: 'In process',
+                  title: l10n.inProcess,
                   status: ContractStatus.inProcess,
                   isSelected: selectedStatuses.contains(ContractStatus.inProcess),
                   onChanged: (val) => _toggleStatus(ContractStatus.inProcess, val),
                 ),
                 _StatusCheckbox(
-                  title: 'Rejected by Payme',
+                  title: l10n.rejectedPayme,
                   status: ContractStatus.rejectedByPayme,
                   isSelected: selectedStatuses.contains(ContractStatus.rejectedByPayme),
                   onChanged: (val) => _toggleStatus(ContractStatus.rejectedByPayme, val),
@@ -97,9 +100,9 @@ class _FiltersPageState extends State<FiltersPage> {
               ],
             ),
             const SizedBox(height: 32),
-            const Text(
-              'Date',
-              style: TextStyle(
+            Text(
+              l10n.date,
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
@@ -122,7 +125,7 @@ class _FiltersPageState extends State<FiltersPage> {
                 Expanded(
                   child: _DateSelector(
                     value: toDate,
-                    hint: 'To',
+                    hint: l10n.to,
                     onTap: () => _selectDate(false),
                   ),
                 ),
@@ -140,12 +143,12 @@ class _FiltersPageState extends State<FiltersPage> {
                       backgroundColor: const Color(0xFF00A795).withOpacity(0.1),
                       foregroundColor: const Color(0xFF00A795),
                       elevation: 0,
-                      minimumSize: const Size(double.infinity, 40),
+                      minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: const Text('Cancel',style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(l10n.cancel),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -162,12 +165,12 @@ class _FiltersPageState extends State<FiltersPage> {
                       backgroundColor: const Color(0xFF00A795),
                       foregroundColor: Colors.white,
                       elevation: 0,
-                      minimumSize: const Size(double.infinity, 40),
+                      minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: const Text('Apply filters',style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(l10n.applyFilters),
                   ),
                 ),
               ],
@@ -224,7 +227,7 @@ class _StatusCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 116,
+      width: 140,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../feature/contracts/domain/entity/contract.dart';
 import '../../feature/contracts/presentation/bloc/contracts_bloc.dart';
+import '../../feature/contracts/presentation/pages/contract_details_page.dart';
 import '../../feature/contracts/presentation/pages/contracts_page.dart';
 import '../../feature/contracts/presentation/pages/home_shell.dart';
 import '../../feature/new/presentation/bloc/create_bloc.dart';
 import '../../feature/new/presentation/tabs/create_contract_tab.dart';
 import '../../feature/new/presentation/tabs/create_invoice_tab.dart';
+import '../../feature/profile/presentation/pages/profile_page.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
 
@@ -29,6 +32,16 @@ final class AppRouter {
       errorBuilder: (context, state) =>
           Scaffold(body: Center(child: Text('Error: ${state.error}'))),
       routes: [
+        GoRoute(
+          path: RoutePaths.contractDetails,
+          builder: (context, state) {
+            final contract = state.extra as Contract;
+            return BlocProvider(
+              create: (context) => GetIt.I<ContractsBloc>(),
+              child: ContractDetailsPage(contract: contract),
+            );
+          },
+        ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return HomeShell(navigationShell: navigationShell);
@@ -97,8 +110,7 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.profile,
                   name: RouteNames.profile,
-                  builder: (context, state) =>
-                      const Center(child: Text("Profile Screen")),
+                  builder: (context, state) => const ProfilePage(),
                 ),
               ],
             ),

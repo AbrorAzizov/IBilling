@@ -132,13 +132,7 @@ class _ContractsPageState extends State<ContractsPage> {
                     height: 80,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'No contracts are made',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                    ),
-                  ),
+
                 ],
               ),
             ),

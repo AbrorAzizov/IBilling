@@ -10,6 +10,7 @@ abstract class ContractRemoteDataSource {
     DateTime? toDate,
     List<ContractStatus>? statuses,
   });
+  Future<void> deleteContract(String id);
 }
 
 class ContractRemoteDataSourceImpl implements ContractRemoteDataSource {
@@ -78,6 +79,15 @@ class ContractRemoteDataSourceImpl implements ContractRemoteDataSource {
       return contracts;
     } catch (e) {
       throw Exception('Failed to filter contracts: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteContract(String id) async {
+    try {
+      await firestore.collection('contracts').doc(id).delete();
+    } catch (e) {
+      throw Exception('Failed to delete contract: $e');
     }
   }
 }

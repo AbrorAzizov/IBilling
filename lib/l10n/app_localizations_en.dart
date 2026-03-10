@@ -163,4 +163,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchHint => 'Search by keywords';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get to => 'To';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get applyFilters => 'Apply filters';
+
+  @override
+  String get dateOfBirth => 'Date of birth:';
+
+  @override
+  String get phoneNumber => 'Phone number:';
+
+  @override
+  String get email => 'E-mail:';
+
+  @override
+  String get chooseLanguage => 'Choose a language';
+
+  @override
+  String get uzbek => 'O\'zbek (Lotin)';
+
+  @override
+  String get russian => 'Русский';
+
+  @override
+  String get english => 'English (USA)';
+
+  @override
+  String get done => 'Done';
 }

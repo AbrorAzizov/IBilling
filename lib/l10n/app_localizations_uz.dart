@@ -162,5 +162,47 @@ class AppLocalizationsUz extends AppLocalizations {
   String get december => 'Dekabr';
 
   @override
-  String get searchHint => 'Search by keywords';
+  String get searchHint => 'Kalit so\'zlar bo\'yicha qidirish';
+
+  @override
+  String get filters => 'Filtrlar';
+
+  @override
+  String get status => 'Holat';
+
+  @override
+  String get date => 'Sana';
+
+  @override
+  String get to => 'Gacha';
+
+  @override
+  String get cancel => 'Bekor qilish';
+
+  @override
+  String get applyFilters => 'Filtrlarni qo\'llash';
+
+  @override
+  String get dateOfBirth => 'Tug\'ilgan sana:';
+
+  @override
+  String get phoneNumber => 'Telefon raqami:';
+
+  @override
+  String get email => 'E-pochta:';
+
+  @override
+  String get chooseLanguage => 'Tilni tanlang';
+
+  @override
+  String get uzbek => 'O\'zbek (Lotin)';
+
+  @override
+  String get russian => 'Русский';
+
+  @override
+  String get english => 'English (USA)';
+
+  @override
+  String get done => 'Tayyor';
 }

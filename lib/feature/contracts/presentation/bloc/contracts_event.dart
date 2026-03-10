@@ -28,3 +28,12 @@ class FilterContractsRequested extends ContractsEvent {
   @override
   List<Object?> get props => [query, fromDate, toDate, statuses];
 }
+
+class DeleteContractRequested extends ContractsEvent {
+  final String id;
+
+  const DeleteContractRequested(this.id);
+
+  @override
+  List<Object?> get props => [id];
+}

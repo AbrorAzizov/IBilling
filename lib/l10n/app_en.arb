@@ -51,5 +51,19 @@
   "october": "October",
   "november": "November",
   "december": "December",
-  "searchHint": "Search by keywords"
+  "searchHint": "Search by keywords",
+  "filters": "Filters",
+  "status": "Status",
+  "date": "Date",
+  "to": "To",
+  "cancel": "Cancel",
+  "applyFilters": "Apply filters",
+  "dateOfBirth": "Date of birth:",
+  "phoneNumber": "Phone number:",
+  "email": "E-mail:",
+  "chooseLanguage": "Choose a language",
+  "uzbek": "O'zbek (Lotin)",
+  "russian": "Русский",
+  "english": "English (USA)",
+  "done": "Done"
 }

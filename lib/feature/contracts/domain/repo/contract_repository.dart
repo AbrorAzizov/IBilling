@@ -10,4 +10,5 @@ abstract class ContractRepository {
     DateTime? toDate,
     List<ContractStatus>? statuses,
   });
+  Future<Either<Failure, void>> deleteContract(String id);
 }

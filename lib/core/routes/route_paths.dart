@@ -8,4 +8,5 @@ class RoutePaths {
   static const String profile = '/profile';
   static const contractCreate = '/contract-create';
   static const invoiceCreate = '/invoice-create';
+  static const contractDetails = '/contract-details';
 }

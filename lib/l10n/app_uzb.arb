@@ -50,5 +50,20 @@
   "september": "Sentabr",
   "october": "Oktabr",
   "november": "Noyabr",
-  "december": "Dekabr"
+  "december": "Dekabr",
+  "searchHint": "Kalit so'zlar bo'yicha qidirish",
+  "filters": "Filtrlar",
+  "status": "Holat",
+  "date": "Sana",
+  "to": "Gacha",
+  "cancel": "Bekor qilish",
+  "applyFilters": "Filtrlarni qo'llash",
+  "dateOfBirth": "Tug'ilgan sana:",
+  "phoneNumber": "Telefon raqami:",
+  "email": "E-pochta:",
+  "chooseLanguage": "Tilni tanlang",
+  "uzbek": "O'zbek (Lotin)",
+  "russian": "Русский",
+  "english": "English (USA)",
+  "done": "Tayyor"
 }

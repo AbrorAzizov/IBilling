@@ -12,6 +12,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
     on<FetchContractsRequested>(_onFetchContractsRequested);
     on<LoadMoreContractsRequested>(_onLoadMoreContractsRequested);
     on<FilterContractsRequested>(_onFilterContractsRequested);
+    on<DeleteContractRequested>(_onDeleteContractRequested);
   }
 
   Future<void> _onFetchContractsRequested(
@@ -82,6 +83,27 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         contracts: contracts,
         hasReachedMax: true,
       )),
+    );
+  }
+
+  Future<void> _onDeleteContractRequested(
+    DeleteContractRequested event,
+    Emitter<ContractsState> emit,
+  ) async {
+    final result = await getContractsUseCase.repository.deleteContract(event.id);
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: ContractsStatus.failure,
+        errorMessage: failure.message,
+      )),
+      (_) {
+        final updatedContracts = state.contracts.where((c) => c.id != event.id).toList();
+        emit(state.copyWith(
+          status: ContractsStatus.success,
+          contracts: updatedContracts,
+        ));
+      },
     );
   }
 }

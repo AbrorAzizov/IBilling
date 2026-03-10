@@ -44,4 +44,14 @@ class ContractRepositoryImpl implements ContractRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteContract(String id) async {
+    try {
+      await remoteDataSource.deleteContract(id);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }
