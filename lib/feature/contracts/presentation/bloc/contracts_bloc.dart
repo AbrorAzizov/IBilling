@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/get_contracts_usecase.dart';
+import '../../domain/entity/contract.dart';
 import 'contracts_event.dart';
 import 'contracts_state.dart';
 
@@ -13,6 +14,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
     on<LoadMoreContractsRequested>(_onLoadMoreContractsRequested);
     on<FilterContractsRequested>(_onFilterContractsRequested);
     on<DeleteContractRequested>(_onDeleteContractRequested);
+    on<ToggleSaveContractRequested>(_onToggleSaveContractRequested);
   }
 
   Future<void> _onFetchContractsRequested(
@@ -28,11 +30,14 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         status: ContractsStatus.failure,
         errorMessage: failure.message,
       )),
-      (contracts) => emit(state.copyWith(
-        status: ContractsStatus.success,
-        contracts: contracts,
-        hasReachedMax: contracts.length < 3,
-      )),
+      (contracts) {
+        final sortedContracts = List.of(contracts)..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        emit(state.copyWith(
+          status: ContractsStatus.success,
+          contracts: sortedContracts,
+          hasReachedMax: contracts.length < 3,
+        ));
+      },
     );
   }
 
@@ -52,11 +57,15 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         status: ContractsStatus.failure,
         errorMessage: failure.message,
       )),
-      (newContracts) => emit(state.copyWith(
-        status: ContractsStatus.success,
-        contracts: List.of(state.contracts)..addAll(newContracts),
-        hasReachedMax: newContracts.length < 3,
-      )),
+      (newContracts) {
+        final allContracts = List.of(state.contracts)..addAll(newContracts);
+        allContracts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        emit(state.copyWith(
+          status: ContractsStatus.success,
+          contracts: allContracts,
+          hasReachedMax: newContracts.length < 3,
+        ));
+      },
     );
   }
 
@@ -78,11 +87,14 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         status: ContractsStatus.failure,
         errorMessage: failure.message,
       )),
-      (contracts) => emit(state.copyWith(
-        status: ContractsStatus.success,
-        contracts: contracts,
-        hasReachedMax: true,
-      )),
+      (contracts) {
+        final sortedContracts = List.of(contracts)..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        emit(state.copyWith(
+          status: ContractsStatus.success,
+          contracts: sortedContracts,
+          hasReachedMax: true,
+        ));
+      },
     );
   }
 
@@ -99,11 +111,27 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       )),
       (_) {
         final updatedContracts = state.contracts.where((c) => c.id != event.id).toList();
+        final updatedSaved = state.savedContracts.where((c) => c.id != event.id).toList();
         emit(state.copyWith(
           status: ContractsStatus.success,
           contracts: updatedContracts,
+          savedContracts: updatedSaved,
         ));
       },
     );
+  }
+
+  void _onToggleSaveContractRequested(
+    ToggleSaveContractRequested event,
+    Emitter<ContractsState> emit,
+  ) {
+    final isSaved = state.savedContracts.any((c) => c.id == event.contract.id);
+    List<Contract> updatedSaved;
+    if (isSaved) {
+      updatedSaved = state.savedContracts.where((c) => c.id != event.contract.id).toList();
+    } else {
+      updatedSaved = List.of(state.savedContracts)..add(event.contract);
+    }
+    emit(state.copyWith(savedContracts: updatedSaved));
   }
 }

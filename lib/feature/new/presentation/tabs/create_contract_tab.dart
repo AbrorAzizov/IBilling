@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibilling_test/feature/shared/widgets/app_bar.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../contracts/presentation/widgets/custom_dropdown.dart';
@@ -43,7 +44,9 @@ class _CreateContractTabState extends State<CreateContractTab> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Contract created successfully!')),
           );
-          Navigator.of(context).pop();
+          if (context.canPop()) {
+            context.pop();
+          }
         } else if (state.status == CreateStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage ?? 'Error creating contract')),

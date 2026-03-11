@@ -37,3 +37,12 @@ class DeleteContractRequested extends ContractsEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class ToggleSaveContractRequested extends ContractsEvent {
+  final Contract contract;
+
+  const ToggleSaveContractRequested(this.contract);
+
+  @override
+  List<Object?> get props => [contract];
+}

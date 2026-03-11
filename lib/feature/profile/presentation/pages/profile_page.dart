@@ -186,7 +186,7 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 24),
                   _ProfileInfoRow(label: l10n.dateOfBirth, value: '16.09.2001'),
                   _ProfileInfoRow(label: l10n.phoneNumber, value: '+998 97 721 06 88'),
-                  _ProfileInfoRow(label: l10n.email, value: 'predatorhunter041@gmail.com'),
+                  _ProfileInfoRow(label: l10n.email, value: 'predator@gmail.com'),
                 ],
               ),
             ),

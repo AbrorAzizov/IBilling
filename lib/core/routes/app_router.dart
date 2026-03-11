@@ -8,6 +8,8 @@ import '../../feature/contracts/presentation/bloc/contracts_bloc.dart';
 import '../../feature/contracts/presentation/pages/contract_details_page.dart';
 import '../../feature/contracts/presentation/pages/contracts_page.dart';
 import '../../feature/contracts/presentation/pages/home_shell.dart';
+import '../../feature/contracts/presentation/pages/saved_page.dart';
+import '../../feature/history/presentation/pages/history_page.dart';
 import '../../feature/new/presentation/bloc/create_bloc.dart';
 import '../../feature/new/presentation/tabs/create_contract_tab.dart';
 import '../../feature/new/presentation/tabs/create_invoice_tab.dart';
@@ -32,19 +34,27 @@ final class AppRouter {
       errorBuilder: (context, state) =>
           Scaffold(body: Center(child: Text('Error: ${state.error}'))),
       routes: [
+        // Move contract details to top level so it covers the bottom navigation bar
         GoRoute(
           path: RoutePaths.contractDetails,
           builder: (context, state) {
-            final contract = state.extra as Contract;
-            return BlocProvider(
-              create: (context) => GetIt.I<ContractsBloc>(),
+            final extra = state.extra as Map<String, dynamic>;
+            final contract = extra['contract'] as Contract;
+            final bloc = extra['bloc'] as ContractsBloc;
+            
+            return BlocProvider.value(
+              value: bloc,
               child: ContractDetailsPage(contract: contract),
             );
           },
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            return HomeShell(navigationShell: navigationShell);
+            // Provide ContractsBloc to the entire shell so tabs can share state (like Saved)
+            return BlocProvider(
+              create: (context) => GetIt.I<ContractsBloc>(),
+              child: HomeShell(navigationShell: navigationShell),
+            );
           },
           branches: [
             StatefulShellBranch(
@@ -52,10 +62,7 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.home,
                   name: RouteNames.home,
-                  builder: (context, state) => BlocProvider(
-                    create: (context) => GetIt.I<ContractsBloc>(),
-                    child: const ContractsPage(),
-                  ),
+                  builder: (context, state) => const ContractsPage(),
                 ),
               ],
             ),
@@ -64,8 +71,7 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.history,
                   name: RouteNames.history,
-                  builder: (context, state) =>
-                      const Center(child: Text("History Screen")),
+                  builder: (context, state) => const HistoryPage(),
                 ),
               ],
             ),
@@ -100,8 +106,7 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.saved,
                   name: RouteNames.saved,
-                  builder: (context, state) =>
-                      const Center(child: Text("Saved Screen")),
+                  builder: (context, state) => const SavedPage(),
                 ),
               ],
             ),

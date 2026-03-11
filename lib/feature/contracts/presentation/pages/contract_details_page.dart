@@ -50,9 +50,19 @@ class ContractDetailsPage extends StatelessWidget {
             ],
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.bookmark_border_rounded, color: Colors.white),
-              onPressed: () {},
+            BlocBuilder<ContractsBloc, ContractsState>(
+              builder: (context, state) {
+                final isSaved = state.savedContracts.any((c) => c.id == contract.id);
+                return IconButton(
+                  icon: Icon(
+                    isSaved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    context.read<ContractsBloc>().add(ToggleSaveContractRequested(contract));
+                  },
+                );
+              },
             ),
             const SizedBox(width: 8),
           ],

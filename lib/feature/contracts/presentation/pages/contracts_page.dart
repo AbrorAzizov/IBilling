@@ -210,11 +210,7 @@ class _ContractsPageState extends State<ContractsPage> {
             width: 80,
             height: 80,
           ),
-          const SizedBox(height: 16),
-          const Text(
-            'No invoices are made',
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
+
         ],
       ),
     );
@@ -222,7 +218,7 @@ class _ContractsPageState extends State<ContractsPage> {
 
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n) {
     return AppBar(
-      backgroundColor: const Color(0xFF141416),
+      backgroundColor: AppColors.background,
       elevation: 0,
       titleSpacing: 20,
       leading: isSearching

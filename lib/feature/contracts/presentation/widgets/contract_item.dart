@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/routes/route_paths.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entity/contract.dart';
+import '../bloc/contracts_bloc.dart';
 
 class ContractItem extends StatelessWidget {
   final Contract contract;
@@ -11,9 +14,15 @@ class ContractItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: () {
-        context.push(RoutePaths.contractDetails, extra: contract);
+        final bloc = context.read<ContractsBloc>();
+        context.push(RoutePaths.contractDetails, extra: {
+          'contract': contract,
+          'bloc': bloc,
+        });
       },
       borderRadius: BorderRadius.circular(8),
       child: Container(
@@ -49,7 +58,7 @@ class ContractItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    contract.status.name,
+                    _getStatusText(l10n, contract.status),
                     style: TextStyle(
                       color: _getStatusColor(contract.status),
                       fontSize: 12,
@@ -61,8 +70,8 @@ class ContractItem extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             _InfoRow(label: 'Fish:', value: contract.fullName),
-            _InfoRow(label: 'Amount:', value: 'N/A'), // Amount not in entity?
-            _InfoRow(label: 'Last invoice:', value: '№ 123'), // Mock
+            _InfoRow(label: 'Amount:', value: 'N/A'),
+            _InfoRow(label: 'Last invoice:', value: '№ 123'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -84,6 +93,19 @@ class ContractItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getStatusText(AppLocalizations l10n, ContractStatus status) {
+    switch (status) {
+      case ContractStatus.paid:
+        return l10n.paid;
+      case ContractStatus.inProcess:
+        return l10n.inProcess;
+      case ContractStatus.rejectedByPayme:
+        return l10n.rejectedPayme;
+      case ContractStatus.rejectedByIQ:
+        return l10n.rejectedIq;
+    }
   }
 
   Color _getStatusColor(ContractStatus status) {
