@@ -70,11 +70,7 @@ class SavedPage extends StatelessWidget {
                     width: 80,
                     height: 80,
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    l10n.noContracts,
-                    style: const TextStyle(color: AppColors.textSecondary),
-                  ),
+
                 ],
               ),
             );
