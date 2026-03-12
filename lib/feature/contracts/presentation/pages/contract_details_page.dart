@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/routes/route_names.dart';
 import '../../../../core/routes/route_paths.dart';
 import '../../../new/domain/entity/contract.dart';
 import '../bloc/contracts_bloc.dart';
@@ -120,7 +121,7 @@ class ContractDetailsPage extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        context.push(RoutePaths.contractCreate);
+                        context.goNamed(RouteNames.contractCreate, extra: {'contract': contract});
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,

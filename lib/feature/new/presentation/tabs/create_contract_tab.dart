@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibilling_test/feature/shared/widgets/app_bar.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../contracts/presentation/widgets/custom_dropdown.dart';
 import '../../../contracts/presentation/widgets/custom_field.dart';
@@ -38,135 +37,146 @@ class _CreateContractTabState extends State<CreateContractTab> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return BlocListener<CreateBloc, CreateState>(
-      listener: (context, state) {
-        if (state.status == CreateStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Contract created successfully!')),
-          );
-          if (context.canPop()) {
-            context.pop();
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF141416),
+        elevation: 0,
+        title: const Text(
+          'New Contract',
+          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            }
+          },
+        ),
+      ),
+      body: BlocListener<CreateBloc, CreateState>(
+        listener: (context, state) {
+          if (state.status == CreateStatus.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Contract created successfully!')),
+            );
+            if (context.canPop()) {
+              context.pop();
+            }
+          } else if (state.status == CreateStatus.failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage ?? 'Error creating contract')),
+            );
           }
-        } else if (state.status == CreateStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? 'Error creating contract')),
-          );
-        }
-      },
-      child: Column(
-        children: [
-          const CustomAppBar(title: 'New Contract'),
-          const SizedBox(height: 8),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ListView(
-                children: [
-                  DropdownField(
-                    label: l10n.entity,
-                    value: selectedPersonType == ContractPersonType.physical
-                        ? l10n.individual
-                        : selectedPersonType == ContractPersonType.legal
-                        ? l10n.legalEntity
-                        : null,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value == l10n.individual) {
-                          selectedPersonType = ContractPersonType.physical;
-                        } else if (value == l10n.legalEntity) {
-                          selectedPersonType = ContractPersonType.legal;
-                        }
-                      });
-                    },
-                    items: [
-                      l10n.individual,
-                      l10n.legalEntity,
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  CustomField(
-                    label: l10n.fullName,
-                    controller: fullNameController,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomField(
-                    label: l10n.organizationAddress,
-                    controller: addressController,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomField(
-                    label: l10n.inn,
-                    controller: innController,
-                  ),
-                  const SizedBox(height: 16),
-                  DropdownField(
-                    label: l10n.contractStatus,
-                    value: selectedStatus == ContractStatus.paid
-                        ? l10n.paid
-                        : selectedStatus == ContractStatus.inProcess
-                        ? l10n.inProcess
-                        : selectedStatus == ContractStatus.rejectedByPayme
-                        ? l10n.rejectedPayme
-                        : selectedStatus == ContractStatus.rejectedByIQ
-                        ? l10n.rejectedIq
-                        : null,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value == l10n.paid) {
-                          selectedStatus = ContractStatus.paid;
-                        } else if (value == l10n.inProcess) {
-                          selectedStatus = ContractStatus.inProcess;
-                        } else if (value == l10n.rejectedPayme) {
-                          selectedStatus = ContractStatus.rejectedByPayme;
-                        } else if (value == l10n.rejectedIq) {
-                          selectedStatus = ContractStatus.rejectedByIQ;
-                        }
-                      });
-                    },
-                    items: [
-                      l10n.paid,
-                      l10n.inProcess,
-                      l10n.rejectedPayme,
-                      l10n.rejectedIq,
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  BlocBuilder<CreateBloc, CreateState>(
-                    builder: (context, state) {
-                      return PrimaryButton(
-                        title: l10n.saveContract,
-                        onPressed: state.status == CreateStatus.loading
-                            ? null
-                            : () {
-                          if (selectedPersonType != null &&
-                              selectedStatus != null) {
-                            final contract = Contract(
-                              id: DateTime.now().millisecondsSinceEpoch.toString(),
-                              personType: selectedPersonType!,
-                              fullName: fullNameController.text,
-                              address: addressController.text,
-                              inn: innController.text,
-                              status: selectedStatus!,
-                              createdAt: DateTime.now(),
-                            );
-                            context.read<CreateBloc>().add(
-                              CreateContractRequested(contract),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Please fill all fields')),
-                            );
-                          }
-                        },
-                      );
-                    },
-                  ),
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView(
+            children: [
+              DropdownField(
+                label: l10n.entity,
+                value: selectedPersonType == ContractPersonType.physical
+                    ? l10n.individual
+                    : selectedPersonType == ContractPersonType.legal
+                    ? l10n.legalEntity
+                    : null,
+                onChanged: (value) {
+                  setState(() {
+                    if (value == l10n.individual) {
+                      selectedPersonType = ContractPersonType.physical;
+                    } else if (value == l10n.legalEntity) {
+                      selectedPersonType = ContractPersonType.legal;
+                    }
+                  });
+                },
+                items: [
+                  l10n.individual,
+                  l10n.legalEntity,
                 ],
               ),
-            ),
+              const SizedBox(height: 16),
+              CustomField(
+                label: l10n.fullName,
+                controller: fullNameController,
+              ),
+              const SizedBox(height: 16),
+              CustomField(
+                label: l10n.organizationAddress,
+                controller: addressController,
+              ),
+              const SizedBox(height: 16),
+              CustomField(
+                label: l10n.inn,
+                controller: innController,
+              ),
+              const SizedBox(height: 16),
+              DropdownField(
+                label: l10n.contractStatus,
+                value: selectedStatus == ContractStatus.paid
+                    ? l10n.paid
+                    : selectedStatus == ContractStatus.inProcess
+                    ? l10n.inProcess
+                    : selectedStatus == ContractStatus.rejectedByPayme
+                    ? l10n.rejectedPayme
+                    : selectedStatus == ContractStatus.rejectedByIQ
+                    ? l10n.rejectedIq
+                    : null,
+                onChanged: (value) {
+                  setState(() {
+                    if (value == l10n.paid) {
+                      selectedStatus = ContractStatus.paid;
+                    } else if (value == l10n.inProcess) {
+                      selectedStatus = ContractStatus.inProcess;
+                    } else if (value == l10n.rejectedPayme) {
+                      selectedStatus = ContractStatus.rejectedByPayme;
+                    } else if (value == l10n.rejectedIq) {
+                      selectedStatus = ContractStatus.rejectedByIQ;
+                    }
+                  });
+                },
+                items: [
+                  l10n.paid,
+                  l10n.inProcess,
+                  l10n.rejectedPayme,
+                  l10n.rejectedIq,
+                ],
+              ),
+              const SizedBox(height: 24),
+              BlocBuilder<CreateBloc, CreateState>(
+                builder: (context, state) {
+                  return PrimaryButton(
+                    title: l10n.saveContract,
+                    onPressed: state.status == CreateStatus.loading
+                        ? null
+                        : () {
+                      if (selectedPersonType != null &&
+                          selectedStatus != null) {
+                        final contract = Contract(
+                          id: DateTime.now().millisecondsSinceEpoch.toString(),
+                          personType: selectedPersonType!,
+                          fullName: fullNameController.text,
+                          address: addressController.text,
+                          inn: innController.text,
+                          status: selectedStatus!,
+                          createdAt: DateTime.now(),
+                        );
+                        context.read<CreateBloc>().add(
+                          CreateContractRequested(contract),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Please fill all fields')),
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
