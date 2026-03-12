@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 
 import '../../feature/contracts/di/contracts_module.dart';
 import '../../feature/new/di/new_module.dart';
+import '../../feature/saved/di/saved_module.dart';
+import '../../feature/history/di/history_module.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -25,6 +27,8 @@ abstract final class InjectionContainer {
     // Feature modules
     await CreateModule().register(sl);
     await ContractsModule().register(sl);
+    await SavedModule().register(sl);
+    await HistoryModule().register(sl);
 
     _initialized = true;
   }

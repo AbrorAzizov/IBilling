@@ -8,12 +8,12 @@ import '../../feature/contracts/presentation/bloc/contracts_bloc.dart';
 import '../../feature/contracts/presentation/pages/contract_details_page.dart';
 import '../../feature/contracts/presentation/pages/contracts_page.dart';
 import '../../feature/contracts/presentation/pages/home_shell.dart';
-import '../../feature/contracts/presentation/pages/saved_page.dart';
 import '../../feature/history/presentation/pages/history_page.dart';
 import '../../feature/new/presentation/bloc/create_bloc.dart';
 import '../../feature/new/presentation/tabs/create_contract_tab.dart';
 import '../../feature/new/presentation/tabs/create_invoice_tab.dart';
 import '../../feature/profile/presentation/pages/profile_page.dart';
+import '../../feature/saved/presentation/pages/saved_page.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
 

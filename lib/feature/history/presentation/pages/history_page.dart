@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ibilling_test/feature/contracts/presentation/bloc/contracts_bloc.dart';
-import 'package:ibilling_test/feature/contracts/presentation/bloc/contracts_state.dart';
-import 'package:ibilling_test/feature/contracts/presentation/widgets/contract_item.dart';
+import 'package:get_it/get_it.dart';
+import '../../../contracts/presentation/widgets/contract_item.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../bloc/history_bloc.dart';
+import '../bloc/history_event.dart';
+import '../bloc/history_state.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -22,127 +24,143 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF141416),
-        elevation: 0,
-        title: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/app_bar/Ellipse 13.svg',
-              height: 35,
-              width: 35,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              l10n.history,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
+    return BlocProvider(
+      create: (context) => GetIt.I<HistoryBloc>()..add(FetchHistoryRequested()),
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF141416),
+          elevation: 0,
+          title: Row(
+            children: [
+              SvgPicture.asset(
+                'assets/app_bar/Ellipse 13.svg',
+                height: 35,
+                width: 35,
               ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.history,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/filter/Filter.svg',
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
+              onPressed: () {},
             ),
+            const VerticalDivider(
+              color: Color(0xFF4E4E4E),
+              width: 1,
+              indent: 15,
+              endIndent: 15,
+            ),
+            IconButton(
+              icon: const Icon(Icons.search, color: Colors.white),
+              onPressed: () {},
+            ),
+            const SizedBox(width: 10),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/filter/Filter.svg',
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-            ),
-            onPressed: () {},
-          ),
-          const VerticalDivider(
-            color: Color(0xFF4E4E4E),
-            width: 1,
-            indent: 15,
-            endIndent: 15,
-          ),
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
-          ),
-          const SizedBox(width: 10),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.date,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.date,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                     _DateSelector(
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      _DateSelector(
                         value: fromDate,
                         hint: '16.02.2021',
                         onTap: () => _selectDate(true),
                       ),
-
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('-', style: TextStyle(color: Colors.white)),
-                    ),
-
-                       _DateSelector(
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text('-', style: TextStyle(color: Colors.white)),
+                      ),
+                      _DateSelector(
                         value: toDate,
                         hint: l10n.to,
                         onTap: () => _selectDate(false),
                       ),
-
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: BlocBuilder<ContractsBloc, ContractsState>(
-              builder: (context, state) {
-                // Sorting by date (newest first)
-                final sortedContracts = List.from(state.contracts);
-                sortedContracts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-
-                if (sortedContracts.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/no contracts/no_contract.svg',
-                          width: 80,
-                          height: 80,
+            Expanded(
+              child: BlocBuilder<HistoryBloc, HistoryState>(
+                builder: (context, state) {
+                  if (state.status == HistoryStatus.loading) {
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          l10n.loading,
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: AppColors.white,
+                          ),
                         ),
+                      ),
+                    );
+                  }
 
-                      ],
-                    ),
+                  if (state.contracts.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/no contracts/no_contract.svg',
+                            width: 80,
+                            height: 80,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            l10n.noContracts,
+                            style: const TextStyle(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.separated(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: state.contracts.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final contract = state.contracts[index];
+                      return ContractItem(contract: contract);
+                    },
                   );
-                }
-
-                return ListView.separated(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: sortedContracts.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final contract = sortedContracts[index];
-                    return ContractItem(contract: contract);
-                  },
-                );
-              },
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -162,7 +180,6 @@ class _HistoryPageState extends State<HistoryPage> {
           toDate = picked;
         }
       });
-      // Optionally trigger search/filter here
     }
   }
 }

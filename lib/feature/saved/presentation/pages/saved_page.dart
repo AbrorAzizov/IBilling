@@ -66,11 +66,12 @@ class SavedPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    'assets/no contracts/no_contract.svg',
+                    'assets/no contracts/Bookmark.svg',
                     width: 80,
                     height: 80,
                   ),
-
+                  SizedBox(height: 8),
+                  Text('No saved contracts', style: TextStyle(color: Colors.white, fontSize: 14))
                 ],
               ),
             );
