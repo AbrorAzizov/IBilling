@@ -8,7 +8,12 @@ class GetContractsUseCase {
 
   GetContractsUseCase(this.repository);
 
-  Future<Either<Failure, List<Contract>>> call({int limit = 3, String? lastId}) {
-    return repository.getContracts(limit: limit, lastId: lastId);
+  Future<Either<Failure, List<Contract>>> call({int limit = 3, String? lastId}) async {
+    final result = await repository.getContracts(limit: limit, lastId: lastId);
+    return result.map((contracts) {
+      final sorted = List<Contract>.from(contracts);
+      sorted.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return sorted;
+    });
   }
 }

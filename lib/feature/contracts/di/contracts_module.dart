@@ -3,6 +3,7 @@ import '../data/datasources/contract_remote_datasource.dart';
 import '../data/repository/contract_repository_impl.dart';
 import '../domain/repo/contract_repository.dart';
 import '../domain/usecases/get_contracts_usecase.dart';
+import '../domain/usecases/filter_contracts_usecase.dart';
 import '../presentation/bloc/contracts_bloc.dart';
 
 class ContractsModule {
@@ -19,8 +20,12 @@ class ContractsModule {
 
     // Use cases
     sl.registerLazySingleton(() => GetContractsUseCase(sl()));
+    sl.registerLazySingleton(() => FilterContractsUseCase(sl()));
 
     // BLoCs
-    sl.registerFactory(() => ContractsBloc(getContractsUseCase: sl()));
+    sl.registerFactory(() => ContractsBloc(
+          getContractsUseCase: sl(),
+          filterContractsUseCase: sl(),
+        ));
   }
 }

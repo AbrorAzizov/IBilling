@@ -1,14 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/get_contracts_usecase.dart';
+import '../../domain/usecases/filter_contracts_usecase.dart';
 import '../../domain/entity/contract.dart';
 import 'contracts_event.dart';
 import 'contracts_state.dart';
 
 class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   final GetContractsUseCase getContractsUseCase;
+  final FilterContractsUseCase filterContractsUseCase;
 
   ContractsBloc({
     required this.getContractsUseCase,
+    required this.filterContractsUseCase,
   }) : super(const ContractsState()) {
     on<FetchContractsRequested>(_onFetchContractsRequested);
     on<LoadMoreContractsRequested>(_onLoadMoreContractsRequested);
@@ -31,10 +34,9 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         errorMessage: failure.message,
       )),
       (contracts) {
-        final sortedContracts = List.of(contracts)..sort((a, b) => b.createdAt.compareTo(a.createdAt));
         emit(state.copyWith(
           status: ContractsStatus.success,
-          contracts: sortedContracts,
+          contracts: contracts,
           hasReachedMax: contracts.length < 3,
         ));
       },
@@ -58,11 +60,9 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         errorMessage: failure.message,
       )),
       (newContracts) {
-        final allContracts = List.of(state.contracts)..addAll(newContracts);
-        allContracts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         emit(state.copyWith(
           status: ContractsStatus.success,
-          contracts: allContracts,
+          contracts: List.of(state.contracts)..addAll(newContracts),
           hasReachedMax: newContracts.length < 3,
         ));
       },
@@ -75,7 +75,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   ) async {
     emit(state.copyWith(status: ContractsStatus.loading, contracts: []));
 
-    final result = await getContractsUseCase.repository.filterContracts(
+    final result = await filterContractsUseCase(
       query: event.query,
       fromDate: event.fromDate,
       toDate: event.toDate,
@@ -88,10 +88,9 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         errorMessage: failure.message,
       )),
       (contracts) {
-        final sortedContracts = List.of(contracts)..sort((a, b) => b.createdAt.compareTo(a.createdAt));
         emit(state.copyWith(
           status: ContractsStatus.success,
-          contracts: sortedContracts,
+          contracts: contracts,
           hasReachedMax: true,
         ));
       },
