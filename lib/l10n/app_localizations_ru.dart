@@ -205,4 +205,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get done => 'Готово';
+
+  @override
+  String get fish => 'Ф.И.О:';
+
+  @override
+  String get amount => 'Сумма:';
+
+  @override
+  String get lastInvoice => 'Последний счет:';
+
+  @override
+  String get numberOfInvoices => 'Количество счетов:';
 }

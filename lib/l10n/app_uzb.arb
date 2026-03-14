@@ -65,5 +65,9 @@
   "uzbek": "O'zbek (Lotin)",
   "russian": "Русский",
   "english": "English (USA)",
-  "done": "Tayyor"
+  "done": "Tayyor",
+  "fish": "F.I.SH:",
+  "amount": "Summa:",
+  "lastInvoice": "Oxirgi hisob-faktura:",
+  "numberOfInvoices": "Hisob-fakturalar soni:"
 }

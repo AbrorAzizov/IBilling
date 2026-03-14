@@ -47,6 +47,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       query: event.query,
       fromDate: event.fromDate,
       toDate: event.toDate,
+      statuses: event.statuses,
     );
 
     result.fold(

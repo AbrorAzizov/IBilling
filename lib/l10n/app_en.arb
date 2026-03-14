@@ -65,5 +65,9 @@
   "uzbek": "O'zbek (Lotin)",
   "russian": "Русский",
   "english": "English (USA)",
-  "done": "Done"
+  "done": "Done",
+  "fish": "Fish:",
+  "amount": "Amount:",
+  "lastInvoice": "Last invoice:",
+  "numberOfInvoices": "Number of invoices:"
 }

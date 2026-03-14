@@ -205,4 +205,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get done => 'Done';
+
+  @override
+  String get fish => 'Fish:';
+
+  @override
+  String get amount => 'Amount:';
+
+  @override
+  String get lastInvoice => 'Last invoice:';
+
+  @override
+  String get numberOfInvoices => 'Number of invoices:';
 }

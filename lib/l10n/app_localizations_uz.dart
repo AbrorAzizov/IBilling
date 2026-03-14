@@ -205,4 +205,16 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get done => 'Tayyor';
+
+  @override
+  String get fish => 'F.I.SH:';
+
+  @override
+  String get amount => 'Summa:';
+
+  @override
+  String get lastInvoice => 'Oxirgi hisob-faktura:';
+
+  @override
+  String get numberOfInvoices => 'Hisob-fakturalar soni:';
 }

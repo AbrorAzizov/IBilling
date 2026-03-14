@@ -492,6 +492,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get done;
+
+  /// No description provided for @fish.
+  ///
+  /// In en, this message translates to:
+  /// **'Fish:'**
+  String get fish;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount:'**
+  String get amount;
+
+  /// No description provided for @lastInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Last invoice:'**
+  String get lastInvoice;
+
+  /// No description provided for @numberOfInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of invoices:'**
+  String get numberOfInvoices;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

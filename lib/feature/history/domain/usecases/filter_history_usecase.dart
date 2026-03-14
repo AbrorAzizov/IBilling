@@ -12,6 +12,7 @@ class FilterHistoryUseCase {
     String? query,
     DateTime? fromDate,
     DateTime? toDate,
+    List<ContractStatus>? statuses,
   }) async {
     final result = await repository.getAllContracts();
 
@@ -24,13 +25,17 @@ class FilterHistoryUseCase {
 
         final matchesFrom = fromDate == null
             ? true
-            : contract.createdAt.isAfter(fromDate);
+            : contract.createdAt.isAfter(fromDate!);
 
         final matchesTo = toDate == null
             ? true
-            : contract.createdAt.isBefore(toDate.add(const Duration(days: 1)));
+            : contract.createdAt.isBefore(toDate!.add(const Duration(days: 1)));
 
-        return matchesQuery && matchesFrom && matchesTo;
+        final matchesStatus = statuses == null || statuses.isEmpty
+            ? true
+            : statuses.contains(contract.status);
+
+        return matchesQuery && matchesFrom && matchesTo && matchesStatus;
       }).toList();
 
       filtered.sort((a, b) => b.createdAt.compareTo(a.createdAt));

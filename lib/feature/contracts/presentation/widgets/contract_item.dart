@@ -81,18 +81,18 @@ class ContractItem extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            _InfoRow(label: 'Fish:', value: contract.fullName),
-            _InfoRow(label: 'Amount:', value: 'N/A'),
-            _InfoRow(label: 'Last invoice:', value: '№ 123'),
+            _InfoRow(label: l10n.fish, value: contract.fullName),
+            _InfoRow(label: l10n.amount, value: 'N/A'),
+            _InfoRow(label: l10n.lastInvoice, value: '№ 123'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _InfoRow(
-                  label: 'Number of Invoices:',
+                  label: l10n.numberOfInvoices,
                   value: '4',
                 ),
                 Text(
-                  '${contract.createdAt.day}.${contract.createdAt.month}.${contract.createdAt.year}',
+                  '${contract.createdAt.day.toString().padLeft(2, '0')}.${contract.createdAt.month.toString().padLeft(2, '0')}.${contract.createdAt.year}',
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,

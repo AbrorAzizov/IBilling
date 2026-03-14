@@ -65,5 +65,9 @@
   "uzbek": "O'zbek (Lotin)",
   "russian": "Русский",
   "english": "English (USA)",
-  "done": "Готово"
+  "done": "Готово",
+  "fish": "Ф.И.О:",
+  "amount": "Сумма:",
+  "lastInvoice": "Последний счет:",
+  "numberOfInvoices": "Количество счетов:"
 }

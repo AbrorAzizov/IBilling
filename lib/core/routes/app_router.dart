@@ -10,11 +10,16 @@ import '../../feature/contracts/presentation/pages/contracts_page.dart';
 import '../../feature/contracts/presentation/pages/home_shell.dart';
 import '../../feature/history/presentation/pages/history_page.dart';
 import '../../feature/history/presentation/bloc/history_bloc.dart';
+import '../../feature/history/presentation/bloc/history_event.dart';
 import '../../feature/new/presentation/bloc/create_bloc.dart';
 import '../../feature/new/presentation/tabs/create_contract_tab.dart';
 import '../../feature/new/presentation/tabs/create_invoice_tab.dart';
 import '../../feature/profile/presentation/pages/profile_page.dart';
 import '../../feature/saved/presentation/pages/saved_page.dart';
+import '../../feature/saved/presentation/bloc/saved_bloc.dart';
+import '../../feature/saved/presentation/bloc/saved_event.dart';
+import '../../feature/saved/domain/usecases/get_saved_contracts_usecase.dart';
+import '../../feature/saved/domain/usecases/filter_saved_contracts_usecase.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
 
@@ -57,8 +62,20 @@ final class AppRouter {
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            return BlocProvider(
-              create: (context) => GetIt.I<ContractsBloc>(),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => GetIt.I<ContractsBloc>()),
+                BlocProvider(
+                  create: (context) => SavedBloc(
+                    getSavedContractsUseCase: GetIt.I<GetSavedContractsUseCase>(),
+                    filterSavedContractsUseCase: GetIt.I<FilterSavedContractsUseCase>(),
+                    contractsBloc: context.read<ContractsBloc>(),
+                  )..add(const FetchSavedContractsRequested()),
+                ),
+                BlocProvider(
+                  create: (context) => GetIt.I<HistoryBloc>()..add(FetchHistoryRequested()),
+                ),
+              ],
               child: HomeShell(navigationShell: navigationShell),
             );
           },
@@ -77,10 +94,7 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.history,
                   name: RouteNames.history,
-                  builder: (context, state) => BlocProvider(
-                    create: (context) => GetIt.I<HistoryBloc>(),
-                    child: const HistoryPage(),
-                  ),
+                  builder: (context, state) => const HistoryPage(),
                 ),
               ],
             ),

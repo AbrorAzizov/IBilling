@@ -4,11 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../contracts/presentation/bloc/contracts_bloc.dart';
-import '../../../contracts/presentation/bloc/contracts_event.dart';
-import '../../../contracts/presentation/bloc/contracts_state.dart';
 import '../../../contracts/presentation/pages/filters_page.dart';
 import '../../../contracts/presentation/widgets/contract_item.dart';
 import '../../../contracts/domain/entity/contract.dart';
+import '../bloc/saved_bloc.dart';
+import '../bloc/saved_event.dart';
+import '../bloc/saved_state.dart';
 
 class SavedPage extends StatefulWidget {
   const SavedPage({super.key});
@@ -18,7 +19,6 @@ class SavedPage extends StatefulWidget {
 }
 
 class _SavedPageState extends State<SavedPage> {
-  DateTime selectedDate = DateTime.now();
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -41,9 +41,8 @@ class _SavedPageState extends State<SavedPage> {
       appBar: _buildAppBar(l10n),
       body: Column(
         children: [
-
           Expanded(
-            child: BlocBuilder<ContractsBloc, ContractsState>(
+            child: BlocBuilder<SavedBloc, SavedState>(
               builder: (context, state) {
                 if (state.savedContracts.isEmpty) {
                   return Center(
@@ -89,56 +88,56 @@ class _SavedPageState extends State<SavedPage> {
       titleSpacing: 20,
       leading: isSearching
           ? IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {
-          setState(() {
-            isSearching = false;
-            _searchController.clear();
-            context.read<ContractsBloc>().add(FetchContractsRequested());
-          });
-        },
-      )
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                setState(() {
+                  isSearching = false;
+                  _searchController.clear();
+                  context.read<SavedBloc>().add(const FetchSavedContractsRequested());
+                });
+              },
+            )
           : null,
       title: isSearching
           ? TextField(
-        controller: _searchController,
-        autofocus: true,
-        style: const TextStyle(color: Colors.white),
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          hintText: l10n.searchHint,
-          hintStyle: const TextStyle(color: AppColors.textSecondary),
-          border: InputBorder.none,
-        ),
-        onChanged: (value) {
-          context.read<ContractsBloc>().add(
-            FilterContractsRequested(
-              query: value,
-              fromDate: filterFromDate,
-              toDate: filterToDate,
-              statuses: selectedStatuses,
-            ),
-          );
-        },
-      )
+              controller: _searchController,
+              autofocus: true,
+              style: const TextStyle(color: Colors.white),
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                hintText: l10n.searchHint,
+                hintStyle: const TextStyle(color: AppColors.textSecondary),
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+                context.read<SavedBloc>().add(
+                      FilterSavedContractsRequested(
+                        query: value,
+                        fromDate: filterFromDate,
+                        toDate: filterToDate,
+                        statuses: selectedStatuses,
+                      ),
+                    );
+              },
+            )
           : Row(
-        children: [
-          SvgPicture.asset(
-            'assets/app_bar/Ellipse 13.svg',
-            height: 35,
-            width: 35,
-          ),
-          const SizedBox(width: 12),
-          Text(
-            l10n.saved,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+              children: [
+                SvgPicture.asset(
+                  'assets/app_bar/Ellipse 13.svg',
+                  height: 35,
+                  width: 35,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  l10n.saved,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       actions: [
         if (!isSearching) ...[
           IconButton(
@@ -164,14 +163,14 @@ class _SavedPageState extends State<SavedPage> {
                   filterFromDate = result['fromDate'];
                   filterToDate = result['toDate'];
                 });
-                context.read<ContractsBloc>().add(
-                  FilterContractsRequested(
-                    fromDate: filterFromDate,
-                    toDate: filterToDate,
-                    statuses: selectedStatuses,
-                    query: _searchController.text,
-                  ),
-                );
+                context.read<SavedBloc>().add(
+                      FilterSavedContractsRequested(
+                        fromDate: filterFromDate,
+                        toDate: filterToDate,
+                        statuses: selectedStatuses,
+                        query: _searchController.text,
+                      ),
+                    );
               }
             },
           ),
@@ -194,21 +193,18 @@ class _SavedPageState extends State<SavedPage> {
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: () {
               _searchController.clear();
-              context.read<ContractsBloc>().add(
-                FilterContractsRequested(
-                  query: '',
-                  fromDate: filterFromDate,
-                  toDate: filterToDate,
-                  statuses: selectedStatuses,
-                ),
-              );
+              context.read<SavedBloc>().add(
+                    const FilterSavedContractsRequested(
+                      query: '',
+                      fromDate: null,
+                      toDate: null,
+                      statuses: [],
+                    ),
+                  );
             },
           ),
         const SizedBox(width: 10),
       ],
     );
   }
-
-
 }
-

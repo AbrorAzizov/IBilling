@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../contracts/presentation/pages/filters_page.dart';
 import '../../../contracts/presentation/widgets/contract_item.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/history_bloc.dart';
 import '../bloc/history_event.dart';
 import '../bloc/history_state.dart';
+import '../../../contracts/domain/entity/contract.dart';
+import 'history_filters_page.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -21,12 +22,11 @@ class _HistoryPageState extends State<HistoryPage> {
   DateTime? toDate;
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
+  List<ContractStatus> selectedStatuses = [];
 
   @override
   void initState() {
     super.initState();
-    // Initial fetch is handled by router's BlocProvider or we can do it here if needed.
-    // Since it's provided in router, we can just ensure it fetches.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<HistoryBloc>().add(FetchHistoryRequested());
     });
@@ -132,7 +132,6 @@ class _HistoryPageState extends State<HistoryPage> {
                   );
                 }
 
-                // Sorting is now handled in the UseCase
                 return ListView.separated(
                   padding: const EdgeInsets.all(16),
                   itemCount: state.contracts.length,
@@ -152,7 +151,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n) {
     return AppBar(
-      backgroundColor: const Color(0xFF141416),
+      backgroundColor: AppColors.secondary,
       elevation: 0,
       titleSpacing: 20,
       leading: isSearching
@@ -184,6 +183,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         query: value,
                         fromDate: fromDate,
                         toDate: toDate,
+                        statuses: selectedStatuses,
                       ),
                     );
               },
@@ -217,23 +217,22 @@ class _HistoryPageState extends State<HistoryPage> {
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => FiltersPage(
-                    initialFromDate: fromDate,
-                    initialToDate: toDate,
+                  builder: (_) => HistoryFiltersPage(
+                    initialStatuses: selectedStatuses,
                   ),
                 ),
               );
 
               if (result != null) {
                 setState(() {
-                  fromDate = result['fromDate'];
-                  toDate = result['toDate'];
+                  selectedStatuses = result['statuses'];
                 });
                 context.read<HistoryBloc>().add(
                       FilterHistoryRequested(
                         fromDate: fromDate,
                         toDate: toDate,
                         query: _searchController.text,
+                        statuses: selectedStatuses,
                       ),
                     );
               }
@@ -263,6 +262,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       query: '',
                       fromDate: fromDate,
                       toDate: toDate,
+                      statuses: selectedStatuses,
                     ),
                   );
             },
@@ -292,6 +292,7 @@ class _HistoryPageState extends State<HistoryPage> {
               fromDate: fromDate,
               toDate: toDate,
               query: _searchController.text,
+              statuses: selectedStatuses,
             ),
           );
     }

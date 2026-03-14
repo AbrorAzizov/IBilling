@@ -12,6 +12,22 @@ class FetchSavedContractsRequested extends SavedEvent {
   const FetchSavedContractsRequested();
 }
 
+class FilterSavedContractsRequested extends SavedEvent {
+  final String? query;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final List<ContractStatus>? statuses;
+
+  const FilterSavedContractsRequested({
+    this.query,
+    this.fromDate,
+    this.toDate,
+    this.statuses,
+  });
+
+  @override
+  List<Object?> get props => [query, fromDate, toDate, statuses];
+}
 
 class DeleteSavedContractRequested extends SavedEvent {
   final String id;
@@ -30,4 +46,3 @@ class RemoveSavedContractRequested extends SavedEvent {
   @override
   List<Object?> get props => [id];
 }
-
