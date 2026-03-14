@@ -23,3 +23,12 @@ class FilterHistoryRequested extends HistoryEvent {
   @override
   List<Object?> get props => [query, fromDate, toDate];
 }
+
+class DeleteHistoryContractRequested extends HistoryEvent {
+  final String id;
+
+  const DeleteHistoryContractRequested(this.id);
+
+  @override
+  List<Object?> get props => [id];
+}

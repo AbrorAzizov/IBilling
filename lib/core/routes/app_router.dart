@@ -9,6 +9,7 @@ import '../../feature/contracts/presentation/pages/contract_details_page.dart';
 import '../../feature/contracts/presentation/pages/contracts_page.dart';
 import '../../feature/contracts/presentation/pages/home_shell.dart';
 import '../../feature/history/presentation/pages/history_page.dart';
+import '../../feature/history/presentation/bloc/history_bloc.dart';
 import '../../feature/new/presentation/bloc/create_bloc.dart';
 import '../../feature/new/presentation/tabs/create_contract_tab.dart';
 import '../../feature/new/presentation/tabs/create_invoice_tab.dart';
@@ -34,23 +35,28 @@ final class AppRouter {
       errorBuilder: (context, state) =>
           Scaffold(body: Center(child: Text('Error: ${state.error}'))),
       routes: [
-        // Move contract details to top level so it covers the bottom navigation bar
         GoRoute(
           path: RoutePaths.contractDetails,
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>;
             final contract = extra['contract'] as Contract;
-            final bloc = extra['bloc'] as ContractsBloc;
+            final bloc = extra['bloc'];
+            
+            if (bloc is HistoryBloc) {
+              return BlocProvider.value(
+                value: bloc,
+                child: ContractDetailsPage(contract: contract),
+              );
+            }
             
             return BlocProvider.value(
-              value: bloc,
+              value: bloc as ContractsBloc,
               child: ContractDetailsPage(contract: contract),
             );
           },
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            // Provide ContractsBloc to the entire shell so tabs can share state (like Saved)
             return BlocProvider(
               create: (context) => GetIt.I<ContractsBloc>(),
               child: HomeShell(navigationShell: navigationShell),
@@ -71,7 +77,10 @@ final class AppRouter {
                 GoRoute(
                   path: RoutePaths.history,
                   name: RouteNames.history,
-                  builder: (context, state) => const HistoryPage(),
+                  builder: (context, state) => BlocProvider(
+                    create: (context) => GetIt.I<HistoryBloc>(),
+                    child: const HistoryPage(),
+                  ),
                 ),
               ],
             ),

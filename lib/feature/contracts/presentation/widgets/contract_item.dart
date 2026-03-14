@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/routes/route_paths.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../history/presentation/bloc/history_bloc.dart';
 import '../../domain/entity/contract.dart';
 import '../bloc/contracts_bloc.dart';
 
@@ -18,7 +19,18 @@ class ContractItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        final bloc = context.read<ContractsBloc>();
+        // Try to get ContractsBloc first, then HistoryBloc if it fails
+        dynamic bloc;
+        try {
+          bloc = context.read<ContractsBloc>();
+        } catch (_) {
+          try {
+            bloc = context.read<HistoryBloc>();
+          } catch (__) {
+            bloc = null;
+          }
+        }
+
         context.push(RoutePaths.contractDetails, extra: {
           'contract': contract,
           'bloc': bloc,

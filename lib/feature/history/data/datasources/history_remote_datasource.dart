@@ -3,6 +3,7 @@ import '../../../contracts/data/model/contract_model.dart';
 
 abstract class HistoryRemoteDataSource {
   Future<List<ContractModel>> getAllContracts();
+  Future<void> deleteContract(String id);
 }
 
 class HistoryRemoteDataSourceImpl implements HistoryRemoteDataSource {
@@ -22,6 +23,15 @@ class HistoryRemoteDataSourceImpl implements HistoryRemoteDataSource {
           .toList();
     } catch (e) {
       throw Exception('Failed to fetch history: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteContract(String id) async {
+    try {
+      await firestore.collection('contracts').doc(id).delete();
+    } catch (e) {
+      throw Exception('Failed to delete contract in history: $e');
     }
   }
 }

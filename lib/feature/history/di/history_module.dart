@@ -3,6 +3,7 @@ import '../data/datasources/history_remote_datasource.dart';
 import '../data/repository/history_repository_impl.dart';
 import '../domain/repo/history_repository.dart';
 import '../domain/usecases/get_history_usecase.dart';
+import '../domain/usecases/filter_history_usecase.dart';
 import '../presentation/bloc/history_bloc.dart';
 
 class HistoryModule {
@@ -19,8 +20,12 @@ class HistoryModule {
 
     // Use cases
     sl.registerLazySingleton(() => GetHistoryUseCase(sl()));
+    sl.registerLazySingleton(() => FilterHistoryUseCase(sl()));
 
     // BLoCs
-    sl.registerFactory(() => HistoryBloc(getHistoryUseCase: sl()));
+    sl.registerFactory(() => HistoryBloc(
+          getHistoryUseCase: sl(),
+          filterHistoryUseCase: sl(),
+        ));
   }
 }

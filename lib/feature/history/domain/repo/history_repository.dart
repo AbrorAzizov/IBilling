@@ -4,4 +4,5 @@ import '../../../contracts/domain/entity/contract.dart';
 
 abstract class HistoryRepository {
   Future<Either<Failure, List<Contract>>> getAllContracts();
+  Future<Either<Failure, void>> deleteContract(String id);
 }
